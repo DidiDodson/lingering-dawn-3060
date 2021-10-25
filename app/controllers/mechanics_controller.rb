@@ -7,13 +7,17 @@ class MechanicsController < ApplicationController
 
   def show
     @mechanic = Mechanic.find(params[:id])
+    @rides = Ride.all
 
-      if params[:id] == 
-        ride = Ride.find(params[:id])
-        @mechanic.add_ride(ride)
-      else
-        @mechanic.rides == "nil"
-      end
+    @ride = @rides.find do |ride|
+      ride.id
+    end
+
+    if @ride.id
+      ride = Ride.find(@ride.id)
+      @mechanic.add_ride(ride)
+      require "pry"; binding.pry
+    end
 
     @mechanic.rides.open_ride
   end
