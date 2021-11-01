@@ -47,17 +47,23 @@ RSpec.describe "Mechanic show page" do
     park_1 = AmusementPark.create!(name: 'Six Flags', cost_of_admission: 50)
 
     ride_1 = park_1.rides.create!(name: 'The Hurler', thrill_rating: 7, open: false)
+    ride_2 = park_1.rides.create!(name: 'Mamba', thrill_rating: 12, open: true)
 
     mechanic_1 = Mechanic.create!(name: "Mary Tanaka", years_of_experience: 5)
+
+    MechanicRide.create!(mechanic: mechanic_1, ride: ride_1)
 
     visit "/mechanics/#{mechanic_1.id}"
 
     expect(page).to have_content("Add a Ride to Workload:")
     expect(page).to have_button("Submit")
 
-    fill_in "search", with: "#{ride_1.id}"
+    expect(page).to_not have_content(ride_2.name)
+
+    fill_in "ride_id", with: "#{ride_2.id}"
     click_button "Submit"
 
-    expect(page).to have_content(ride_1.name)
+    expect(page).to have_content(ride_2.name)
+    expect(current_path).to eq("/mechanics/#{mechanic_1.id}")
   end
 end

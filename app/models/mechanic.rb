@@ -6,7 +6,7 @@ class Mechanic < ApplicationRecord
     self.all.average(:years_of_experience)
   end
 
-  def add_ride(ride)
-    self.rides << ride
+  def open_rides
+    rides.open_ride
   end
 end
